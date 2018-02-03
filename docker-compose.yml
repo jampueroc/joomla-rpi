@@ -1,0 +1,37 @@
+version: '2'
+
+services:
+    web:
+        image: jampueroc/joomla-rpi
+        restart: always
+        ports:
+            - 8080:80
+        expose:
+            - "80"
+        environment:
+            - JOOMLA_DB_HOST=joomladb
+            - JOOMLA_DB_PORT=3306
+            - JOOMLA_DB_PASSWORD=WUPnhaRKvVkAuQZs95Ff
+        links:             
+            - joomladb:mysql
+        depends_on:
+            - joomladb
+        volumes:
+            - joomla-data:/var/www/html
+
+    joomladb:
+        image: hypriot/rpi-mysql:5.5
+        restart: always
+        expose:
+            - "3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=WUPnhaRKvVkAuQZs95Ff
+        volumes:
+            - mysql-data:/var/lib/mysql
+
+
+volumes:
+    mysql-data:
+        driver: local
+    joomla-data:
+        driver: local
